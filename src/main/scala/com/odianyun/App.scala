@@ -10,7 +10,9 @@ import org.apache.spark.SparkConf
  */
 object App {
   def main(args: Array[String]): Unit = {
-    val conf = new SparkConf().setAppName("sparkApp").setMaster("local")
+    System.setProperty("hadoop.home.dir","D:\\hadoop-common-2.2.0-bin-master")
+//    val conf = new SparkConf().setAppName("sparkApp").setMaster("local")
+    val conf = new SparkConf().setAppName("sparkApp").setMaster("local[*]")
     val sc = new SparkContext(conf)
     val wordRdd = sc.textFile("hdfs://heimdall01.test.hadoop.com:8020/user/spark/README.md")
     val countRdd = wordRdd.flatMap(_.split(" ")).map((_,1)).reduceByKey(_ + _)

@@ -22,6 +22,7 @@ object UserWideCalc {
 //    val keys = rows.rdd.map(row=>row.getString(0))
 //    keys.foreach(key=>print(key)+",")
     val spark =SparkSession.builder.master("local[*]").appName("UserWideCalc").enableHiveSupport().getOrCreate()
+
     val rows = spark.sql("SELECT a.id,a.username,a.mobile,a.telephone,a.email,a.address," +
       " c.merchant_id,c.level_code,c.level_name,c.menbership_level_type," +
       " d.member_type,d.member_type_name" +
@@ -33,6 +34,8 @@ object UserWideCalc {
 //    keys.foreach(key=>println(key+","))
 //    rows DF
       rows.createOrReplaceTempView("tmp");
+      // 防止生成很多小文件
+//      spark.sqlContext.setConf("spark.sql.shuffle.partitions","1")
       spark.sql("insert into bi.bi_user partition(dt='"+NowDate+"') select * from tmp")
 //      rows.rdd.saveAsTextFile("/user/hive/warehouse/")
       spark.stop()

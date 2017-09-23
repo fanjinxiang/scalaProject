@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="horse-common" />
+        <module name="horse-core" />
+        <module name="horse-spark" />
+        <module name="scalaTest" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="horse" target="1.7" />
+      <module name="horse (1)" target="1.7" />
+      <module name="horse-common" target="1.7" />
+      <module name="horse-common (1)" target="1.7" />
+      <module name="horse-core" target="1.7" />
+      <module name="horse-core (1)" target="1.7" />
+      <module name="horse-spark" target="1.7" />
+      <module name="horse-spark (1)" target="1.7" />
+      <module name="scalaTest" target="1.7" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
