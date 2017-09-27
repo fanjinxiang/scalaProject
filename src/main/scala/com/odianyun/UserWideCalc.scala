@@ -14,6 +14,7 @@ import org.apache.spark.{SparkConf, SparkContext}
 object UserWideCalc {
   def main(args: Array[String]): Unit = {
     System.setProperty("hadoop.home.dir","D:\\hadoop-common-2.2.0-bin-master")
+
 //    val conf = new SparkConf().setAppName("UserWideCalc").setMaster("local[4]")
 //    val sc = new SparkContext(conf)
 //    val hiveCtx = new HiveContext(sc)
@@ -33,12 +34,16 @@ object UserWideCalc {
 //    val keys = rows.rdd.map(row=>row.get(0))
 //    keys.foreach(key=>println(key+","))
 //    rows DF
-      rows.createOrReplaceTempView("tmp");
+//      rows.createOrReplaceTempView("tmp");
       // 防止生成很多小文件
 //      spark.sqlContext.setConf("spark.sql.shuffle.partitions","1")
-      spark.sql("insert into bi.bi_user partition(dt='"+NowDate+"') select * from tmp")
+//      spark.sql("insert into bi.bi_user partition(dt='"+NowDate+"') select * from tmp")
 //      rows.rdd.saveAsTextFile("/user/hive/warehouse/")
-      spark.stop()
+    val now = NowDate
+    // 改变生成文件个数
+    rows.rdd.repartition(1).saveAsTextFile("/user/hive/warehouse/bi/bi_user/full/"+now)
+    spark.sql("alter table bi.bi_user set location '/user/hive/warehouse/bi/bi_user/full/"+now+"'")
+    spark.stop()
   }
 
   /**
@@ -47,7 +52,7 @@ object UserWideCalc {
     */
   def NowDate(): String = {
     val now: Date = new Date()
-    val dateFormat: SimpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss")
+    val dateFormat: SimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss")
     val date = dateFormat.format(now)
     return date
   }
